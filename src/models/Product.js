@@ -14,16 +14,9 @@ export const Product = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    subTitle: {
-      type: DataTypes.STRING,
-    },
-    description: {
-      type: DataTypes.STRING,
-    },
     price: {
       type: DataTypes.FLOAT,
       defaultValue: 0,
-      allowNull: false,
     },
     presentation: {
       type: DataTypes.STRING,

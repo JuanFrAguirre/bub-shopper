@@ -46,20 +46,13 @@ const productsController = {
     }
   },
   createProduct: async function (req, res) {
-    const { title, price, storeId } = req.body
-    const { body } = req
-    if (!title || !price || !storeId)
-      return res.status(500).json({ error: 'Incorrect or missing parameters' })
-
+    const { title, price, presentation } = req.body
+    if (!title) return res.status(500).json({ error: 'Missing title' })
     try {
-      const store = await Store.findByPk(storeId)
-      if (store === null)
-        return res.status(404).json({ error: 'Store not found' })
-      const fields = { title, price, storeId }
-      fields.subTitle = body.subTitle
-      fields.description = body.description
-      fields.presentation = body.presentation
-      const newProduct = await Product.create({ ...fields })
+      const fields = { title }
+      if (price) fields.price = price
+      if (presentation) fields.presentation = presentation
+      const newProduct = await Product.create(fields)
       res.status(201).json(newProduct)
     } catch (error) {
       res.json(error)
@@ -67,16 +60,8 @@ const productsController = {
   },
   editProductById: async function (req, res) {
     const { id } = req.params
-    const { title, subtitle, description, price, presentation, storeId } =
-      req.body
-    if (
-      !title &&
-      !subtitle &&
-      !description &&
-      !price &&
-      !presentation &&
-      !storeId
-    )
+    const { title, price, presentation } = req.body
+    if (!title && !price && !presentation)
       return res.status(500).json('Incorrect or missing parameters')
     try {
       const product = await Product.findByPk(id)
