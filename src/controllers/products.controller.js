@@ -1,9 +1,8 @@
 import { Op } from 'sequelize'
 import { Product } from '../models/Product.js'
-import { Store } from '../models/Store.js'
 
 const productsController = {
-  getAllProducts: async function (req, res) {
+  getAllProducts: async function (_req, res) {
     try {
       const products = await Product.findAll()
       res.json(products)
@@ -27,20 +26,8 @@ const productsController = {
   getProductById: async function (req, res) {
     try {
       const product = await Product.findByPk(req.params.id)
-      if (product === null) return res.sendStatus(404)
+      if (!product) return res.sendStatus(404)
       res.json(product)
-    } catch (err) {
-      res.json(err)
-    }
-  },
-  getProductsByStore: async function (req, res) {
-    const { storeId } = req.params
-    try {
-      const store = await Store.findByPk(storeId)
-      if (store === null)
-        return res.status(404).json({ error: 'Store not found' })
-      const products = await Product.findAll({ where: { storeId } })
-      res.json(products)
     } catch (err) {
       res.json(err)
     }

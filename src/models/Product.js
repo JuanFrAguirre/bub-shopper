@@ -1,6 +1,5 @@
 import { DataTypes } from 'sequelize'
 import sequelize from '../database/db.js'
-import { Store } from './Store.js'
 
 export const Product = sequelize.define(
   'Product',
